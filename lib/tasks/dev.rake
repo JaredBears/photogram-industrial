@@ -10,15 +10,24 @@ task({ :sample_data => :environment }) do
     User.destroy_all
   end
 
-  15.times do
-    name = Faker::Name.first_name
-    u = User.create(
-      email: "#{name}@example.com",
+  usernames = Array.new { Faker::Name.first_name }
+
+  usernames << "alice"
+  usernames << "bob"
+
+  13.times do
+    usernames << Faker::Name.first_name
+  end
+
+  usernames.each do |username|
+    User.create(
+      email: "#{username}@example.com",
       password: "password",
-      username: name,
+      username: username.downcase,
       private: [true, false].sample,
     )
   end
+
   pp "There are now #{User.count} users."
 
   users = User.all
@@ -45,6 +54,8 @@ task({ :sample_data => :environment }) do
 
   users.each do |first_user|
     users.each do |second_user|
+      next if first_user == second_user
+
       if rand < 0.75
         first_user.sent_follow_requests.create(
           recipient: second_user,

@@ -24,4 +24,14 @@ class FollowRequest < ApplicationRecord
   belongs_to :sender, class_name: "User"
 
   enum status: { pending: "pending", rejected: "rejected", accepted: "accepted" }
+
+  validates :sender_id, uniqueness: { scope: :recipient_id }
+  validate :sender_cant_follow_self
+
+  def sender_cant_follow_self
+    if sender_id == recipient_id
+      errors.add(:sender_id, "can't follow self")
+    end
+  end
+
 end
