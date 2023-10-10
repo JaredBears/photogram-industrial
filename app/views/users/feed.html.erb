@@ -25,7 +25,9 @@
 </div>
 
 <ul>
-  <% @user.own_photos.each do |photo| %>
-    <%= render "photos/photo", photo: photo %>
+  <% @user.leaders.each do |leader| %>
+    <% leader.own_photos.each do |photo| %>
+      <%= render "photos/photo", photo: photo %>
+    <% end %>
   <% end %>
 </ul>
