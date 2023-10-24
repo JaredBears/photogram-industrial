@@ -1,0 +1,5 @@
+<div class="list-group">
+  <% users.each do |user| %>
+    <a href="/<%= user.username %>" class="list-group-item list-group-item-action"><%= user.username %></a>
+  <% end %>
+</div>
